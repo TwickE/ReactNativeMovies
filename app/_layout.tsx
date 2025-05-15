@@ -1,9 +1,12 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from "expo-router";
 import './globals.css';
 
+const client = new QueryClient();
+
 export default function RootLayout() {
   return (
-    <>
+    <QueryClientProvider client={client}>
       <Stack>
         <Stack.Screen
           name="(tabs)"
@@ -18,6 +21,7 @@ export default function RootLayout() {
           }}
         />
       </Stack>
-    </>
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+    </QueryClientProvider>
   );
 }
