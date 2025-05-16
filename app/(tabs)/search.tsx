@@ -1,50 +1,56 @@
+import MovieCard from "@/components/MovieCard";
+import SearchBar from "@/components/SearchBar";
+import { icons } from "@/constants/icons";
+import { images } from "@/constants/images";
+import { updateSearchCount } from "@/services/appwrite";
+import { fetchMovies } from "@/services/tmdb";
+import useDebounce from "@/services/useDebounce";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 
-import { icons } from "@/constants/icons";
-import { images } from "@/constants/images";
-
-import { fetchMovies } from "@/services/api";
-import { updateSearchCount } from "@/services/appwrite";
-import useFetch from "@/services/useFetch";
-
-import MovieDisplayCard from "@/components/MovieCard";
-import SearchBar from "@/components/SearchBar";
-
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 500);
 
   const {
-    data: movies = [],
-    loading,
-    error,
-    refetch: loadMovies,
-    reset,
-  } = useFetch(() => fetchMovies({ query: searchQuery }), false);
+    data: movies,
+    isLoading,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery({
+    queryKey: ['movies', debouncedSearchQuery],
+    queryFn: ({ pageParam }) => fetchMovies({ query: searchQuery, pageNumber: pageParam }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total_pages) {
+        return lastPage.page + 1;
+      }
+    },
+    enabled: !!debouncedSearchQuery,
+  })
+  const searchedMovies = movies?.pages.flatMap((page) => page.results || []);
+
+  const saveSearchMutation = useMutation({
+    mutationFn: async ({ query, movie }: { query: string; movie: any }) => {
+      await updateSearchCount(query.toLowerCase(), movie);
+    }
+  });
+
+  useEffect(() => {
+    if (searchedMovies && searchedMovies.length > 0 && debouncedSearchQuery) {
+      saveSearchMutation.mutate({
+        query: debouncedSearchQuery,
+        movie: searchedMovies[0]
+      });
+    }
+  }, [movies]);
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
   };
-
-  useEffect(() => {
-    const timeoutId = setTimeout(async () => {
-      if (searchQuery.trim()) {
-        await loadMovies();
-      } else {
-        reset();
-      }
-    }, 500);
-
-    return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    if (searchQuery.trim() && movies?.length > 0 && movies[0]) {
-      updateSearchCount(searchQuery.toLowerCase(), movies[0]);
-    }
-  }, [movies]);
-
-
 
   return (
     <View className="flex-1 bg-primary">
@@ -53,72 +59,53 @@ const Search = () => {
         className="flex-1 absolute w-full z-0"
         resizeMode="cover"
       />
-
-      <FlatList
-        className="px-5"
-        data={movies as Movie[]}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <MovieDisplayCard {...item} />}
-        numColumns={3}
-        columnWrapperStyle={{
-          justifyContent: "flex-start",
-          gap: 16,
-          marginVertical: 16,
-        }}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        ListHeaderComponent={
-          <>
-            <View className="w-full flex-row justify-center mt-20 items-center">
-              <Image source={icons.logo} className="w-12 h-10" />
-            </View>
-
-            <View className="my-5">
-              <SearchBar
-                placeholder="Search for a movie"
-                value={searchQuery}
-                onChangeText={handleSearch}
-              />
-            </View>
-
-            {loading && (
-              <ActivityIndicator
-                size="large"
-                color="#0000ff"
-                className="my-3"
-              />
-            )}
-
-            {error && (
-              <Text className="text-red-500 px-5 my-3">
-                Error: {error.message}
-              </Text>
-            )}
-
-            {!loading &&
-              !error &&
-              searchQuery.trim() &&
-              movies?.length! > 0 && (
-                <Text className="text-xl text-white font-bold">
-                  Search Results for{" "}
-                  <Text className="text-accent">{searchQuery}</Text>
-                </Text>
-              )}
-          </>
-        }
-        ListEmptyComponent={
-          !loading && !error ? (
-            <View className="mt-10 px-5">
-              <Text className="text-center text-gray-500">
-                {searchQuery.trim()
-                  ? "No movies found"
-                  : "Start typing to search for movies"}
-              </Text>
-            </View>
-          ) : null
-        }
-      />
+      <View className="px-5 pt-20">
+        <Image source={icons.logo} className="size-12 mb-5 mx-auto" />
+        <SearchBar
+          placeholder="Search for a movie"
+          value={searchQuery}
+          onChangeText={handleSearch}
+        />
+      </View>
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" className="py-5" />
+      ) : isError ? (
+        <Text className="text-red-500 mx-auto my-3">Error fetching movies</Text>
+      ) : searchQuery.trim() && searchedMovies?.length! > 0 && (
+        <>
+          <Text className="text-xl text-white font-bold m-5">
+            Search Results for{" "}
+            <Text className="text-accent">{searchQuery}</Text>
+          </Text>
+          <FlatList
+            data={searchedMovies}
+            renderItem={({ item }) => item && <MovieCard {...item} />}
+            keyExtractor={(item) => item?.id?.toString() || Math.random().toString()}
+            numColumns={3}
+            columnWrapperStyle={{
+              justifyContent: "flex-start",
+              gap: 20,
+              paddingHorizontal: 20,
+              marginBottom: 10,
+            }}
+            ListFooterComponent={
+              isFetchingNextPage ? (
+                <ActivityIndicator size="large" color="#0000ff" className="py-5" />
+              ) : null
+            }
+            onEndReached={() => {
+              if (hasNextPage && !isFetchingNextPage) {
+                fetchNextPage();
+              }
+            }}
+            onEndReachedThreshold={0.5}
+            showsVerticalScrollIndicator={false}
+            className="bg-primary"
+          />
+        </>
+      )}
     </View>
   );
-};
+}
 
 export default Search;
