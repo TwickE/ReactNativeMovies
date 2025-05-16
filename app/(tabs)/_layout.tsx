@@ -1,25 +1,21 @@
-import { icons } from '@/constants/icons';
-import { images } from '@/constants/images';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Image, ImageBackground, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 const TabIcon = ({ focused, icon, title }: any) => {
   if (focused) {
     return (
-      <ImageBackground
-        source={images.highlight}
-        className='flex flex-row w-full flex-1 min-w-[112px] min-h-16 mt-4 justify-center items-center rounded-full overflow-hidden'
-      >
-        <Image source={icon} tintColor='#151312' className='size-5' />
+      <View className='flex flex-row flex-1 min-w-[140px] w-full min-h-16 mt-4 justify-center items-center rounded-full bg-light-100'>
+        <FontAwesome name={icon} size={24} color="#151312" />
         <Text className='text-secondary text-base font-semibold ml-2'>{title}</Text>
-      </ImageBackground>
+      </View>
     )
   }
 
   return (
     <View className='size-full justify-center items-center mt-4 rounded-full'>
-      <Image source={icon} tintColor='#A8B5DB' className='size-5' />
+      <FontAwesome name={icon} size={24} color="#A8B5DB" />
     </View>
   )
 }
@@ -53,7 +49,7 @@ const _layout = () => {
         options={{
           title: 'Home',
           headerShown: false,
-          tabBarIcon: ({ focused }) => ( <TabIcon focused={focused} icon={icons.home} title='Home'/> )
+          tabBarIcon: ({ focused }) => (<TabIcon focused={focused} icon="home" title='Home' />)
         }}
       />
       <Tabs.Screen
@@ -61,7 +57,7 @@ const _layout = () => {
         options={{
           title: 'Search',
           headerShown: false,
-          tabBarIcon: ({ focused }) => ( <TabIcon focused={focused} icon={icons.search} title='Search'/> )
+          tabBarIcon: ({ focused }) => (<TabIcon focused={focused} icon="search" title='Search' />)
         }}
       />
       <Tabs.Screen
@@ -69,7 +65,7 @@ const _layout = () => {
         options={{
           title: 'Settings',
           headerShown: false,
-          tabBarIcon: ({ focused }) => ( <TabIcon focused={focused} icon={icons.settings} title='Settings'/> )
+          tabBarIcon: ({ focused }) => (<TabIcon focused={focused} icon="gear" title='Settings' />)
         }}
       />
     </Tabs>

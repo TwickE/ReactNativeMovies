@@ -53,7 +53,7 @@ const Search = () => {
   };
 
   return (
-    <View className="flex-1 bg-primary">
+    <View className="flex-1 bg-light-200 dark:bg-primary">
       <Image
         source={images.bg}
         className="flex-1 absolute w-full z-0"
@@ -73,7 +73,7 @@ const Search = () => {
         <Text className="text-red-500 mx-auto my-3">Error fetching movies</Text>
       ) : searchQuery.trim() && searchedMovies?.length! > 0 && (
         <>
-          <Text className="text-xl text-white font-bold m-5">
+          <Text className="text-xl text-black dark:text-white font-bold m-5">
             Search Results for{" "}
             <Text className="text-accent">{searchQuery}</Text>
           </Text>
@@ -100,7 +100,7 @@ const Search = () => {
             }}
             onEndReachedThreshold={0.5}
             showsVerticalScrollIndicator={false}
-            className="bg-primary"
+            className="bg-light-200 dark:bg-primary"
           />
         </>
       )}

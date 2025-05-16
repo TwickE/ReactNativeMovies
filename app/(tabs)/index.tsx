@@ -4,6 +4,7 @@ import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
 import { getTrendingMovies } from "@/services/appwrite";
 import { fetchMovies } from "@/services/tmdb";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { ActivityIndicator, FlatList, Image, Text, TouchableWithoutFeedback, View } from "react-native";
@@ -45,13 +46,13 @@ export default function Index() {
       <View className="px-5 pt-20">
         <Image source={icons.logo} className="size-12 mb-5 mx-auto" />
         <TouchableWithoutFeedback onPress={() => router.push("/search")}>
-          <View className="flex-row items-center bg-dark-200 rounded-full px-5 py-4">
-            <Image source={icons.search} className="w-5 h-5" resizeMode="contain" tintColor="#AB8BFF" />
-            <Text className="flex-1 ml-2 text-light-200">Search for a movie</Text>
+          <View className="flex-row items-center bg-light-100 dark:bg-dark-200 rounded-full px-5 py-4">
+            <FontAwesome name="search" size={20} color="#AB8BFF" />
+            <Text className="flex-1 ml-2 text-gray-500 dark:text-light-200">Search for a movie</Text>
           </View>
         </TouchableWithoutFeedback>
         <View className="mt-10">
-          <Text className="text-lg text-white font-bold mb-3">Trending Movies</Text>
+          <Text className="text-lg text-black dark:text-white font-bold mb-3">Trending Movies</Text>
           {trendingLoading ? (
             <ActivityIndicator size="large" color="#0000ff" className="py-5" />
           ) : trendingError ? (
@@ -70,19 +71,19 @@ export default function Index() {
             />
           )}
         </View>
-        <Text className="text-lg text-white font-bold mt-5 mb-3">Latest Movies</Text>
+        <Text className="text-lg text-black dark:text-white font-bold mt-5 mb-3">Latest Movies</Text>
       </View>
     </>
   );
 
   return (
     moviesLoading ? (
-      <View className="flex-1 bg-primary">
+      <View className="flex-1 bg-light-200 dark:bg-primary">
         {renderHeader()}
         <ActivityIndicator size="large" color="#0000ff" className="py-5" />
       </View>
     ) : moviesError ? (
-      <View className="flex-1 bg-primary">
+      <View className="flex-1 bg-light-200 dark:bg-primary">
         {renderHeader()}
         <Text className="text-red-500 mx-auto my-3">Error fetching movies</Text>
       </View>
@@ -111,7 +112,7 @@ export default function Index() {
         }}
         onEndReachedThreshold={0.5}
         showsVerticalScrollIndicator={false}
-        className="bg-primary"
+        className="bg-light-200 dark:bg-primary"
       />
     ) : null
   );

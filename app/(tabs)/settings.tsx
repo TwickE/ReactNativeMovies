@@ -1,46 +1,63 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useColorScheme } from "nativewind";
+import { useEffect, useState } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Settings = () => {
   const { setColorScheme, colorScheme } = useColorScheme();
+  const [selectedTheme, setSelectedTheme] = useState("");
+
+  useEffect(() => {
+    setSelectedTheme(colorScheme!);
+  }, []);
 
   return (
-    <SafeAreaView className="flex-1 bg-primary">
+    <SafeAreaView className="flex-1 bg-light-200 dark:bg-primary">
       <View className='px-5 pt-10'>
-        <Text className='text-white text-lg font-bold'>Language Settings</Text>
+        <Text className='text-black dark:text-white text-lg font-bold'>Language Settings</Text>
         <SettingsButton
           title='Português'
           onPress={() => { }}
           isActive={false}
+          theme={colorScheme}
         />
         <SettingsButton
           title='English'
           onPress={() => { }}
           isActive={false}
+          theme={colorScheme}
         />
-        <Text className='text-white text-lg font-bold mt-8'>Theme Settings</Text>
+        <Text className='text-black dark:text-white text-lg font-bold mt-8'>Theme Settings</Text>
         <SettingsButton
           title='Light'
           icon="lightbulb-on"
-          onPress={() => setColorScheme("light")}
-          isActive={colorScheme === "light"}
+          onPress={() => {
+            setColorScheme("light");
+            setSelectedTheme("light");
+          }}
+          isActive={selectedTheme === "light"}
+          theme={colorScheme}
         />
         <SettingsButton
           title='Dark'
           icon="weather-night"
-          onPress={() => setColorScheme("dark")}
-          isActive={colorScheme === "dark"}
+          onPress={() => {
+            setColorScheme("dark");
+            setSelectedTheme("dark");
+          }}
+          isActive={selectedTheme === "dark"}
+          theme={colorScheme}
         />
         <SettingsButton
           title='System'
           icon="theme-light-dark"
           onPress={() => {
             setColorScheme("system");
-            console.log(colorScheme);
+            setSelectedTheme("system");
           }}
-          isActive={colorScheme !== "dark" && colorScheme !== "light"}
+          isActive={selectedTheme === "system"}
+          theme={colorScheme}
         />
       </View>
     </SafeAreaView>
@@ -54,22 +71,26 @@ type SettingsButtonProps = {
   icon?: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   onPress: () => void;
   isActive: boolean;
+  theme?: string;
 }
 
-const SettingsButton = ({ title, icon, onPress, isActive }: SettingsButtonProps) => {
-
+const SettingsButton = ({ title, icon, onPress, isActive, theme }: SettingsButtonProps) => {
   return (
-    <TouchableOpacity onPress={onPress} className='flex-row justify-between items-center bg-red-500 dark:bg-dark-200 p-5 rounded-[10px] mt-4'>
+    <TouchableOpacity onPress={onPress} className='flex-row justify-between items-center bg-light-100 dark:bg-dark-200 p-5 rounded-[10px] mt-4'>
       <View className='flex-row items-center gap-3'>
         {icon && (
-          <MaterialCommunityIcons name={icon} size={20} color="white" />
+          <MaterialCommunityIcons name={icon} size={20} color={theme === "dark" ? "white" : "black"} />
         )}
-        <Text className='text-white text-sm font-medium'>{title}</Text>
+        <Text className='text-black dark:text-white text-sm font-medium'>{title}</Text>
       </View>
       <MaterialCommunityIcons
         name={isActive ? "check-circle" : "checkbox-blank-circle-outline"}
         size={20}
-        color={isActive ? "#A8B5DB" : "white"}
+        color={
+          isActive ? ("#0000ff") 
+          : theme === 'dark' ? ("white") 
+          : "black"
+        }
       />
     </TouchableOpacity>
   )

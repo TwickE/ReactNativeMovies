@@ -1,7 +1,7 @@
-import { icons } from "@/constants/icons";
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useRef } from "react";
-import { Image, TextInput, View } from "react-native";
+import { TextInput, View } from "react-native";
 
 interface Props {
   placeholder: string;
@@ -23,19 +23,14 @@ const SearchBar = ({ placeholder, value, onChangeText }: Props) => {
   );
 
   return (
-    <View className="flex-row items-center bg-dark-200 rounded-full px-5 py-4">
-      <Image
-        source={icons.search}
-        className="w-5 h-5"
-        resizeMode="contain"
-        tintColor="#AB8BFF"
-      />
+    <View className="flex-row items-center bg-light-100 dark:bg-dark-200 rounded-full px-5 py-4">
+      <FontAwesome name="search" size={20} color="#AB8BFF" />
       <TextInput
         ref={inputRef}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
-        className="flex-1 ml-2 text-white"
+        className="flex-1 ml-2 text-black dark:text-white"
         placeholderTextColor="#A8B5DB"
         autoFocus={true}
       />
