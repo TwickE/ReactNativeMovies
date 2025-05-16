@@ -1,4 +1,5 @@
 import { icons } from '@/constants/icons';
+import { images } from '@/constants/images';
 import { fetchMovieDetails } from '@/services/tmdb';
 import { useQuery } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -45,7 +46,14 @@ const MovieDetails = () => {
         ) : (
           <>
             <View className='flex-1 items-center justify-center'>
-              <Image source={{ uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}` }} className="w-full h-[550PX]" resizeMode="cover" />
+              <Image
+                source={
+                  movie?.poster_path
+                    ? { uri: `https://image.tmdb.org/t/p/w500${movie?.poster_path}` }
+                    : images.noPoster
+                }
+                className="w-full h-[550PX]" resizeMode="cover"
+              />
             </View>
             <View className='flex-col items-start justify-center mt-5 px-5'>
               <Text className="text-white font-bold tet-xl">{movie?.title}</Text>
