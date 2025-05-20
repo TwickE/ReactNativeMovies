@@ -1,50 +1,35 @@
-# Welcome to your Expo app 👋
+# RecatNativeMovies
+ReactNativeMovies is an App built with React Native for the UI, Appwrite for the Trending Movies Algorithm, and styled with TailwindCSS. It offers a sleek and modern experience for browsing and discovering movies.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Tech Stack
+- React Native
+- Expo
+- Tailwindcss
+- TypeScript
+- Appwrite
+- i18next
 
-## Get started
+## Faetures
+ - Browse All Movies: Explore a wide range of movies available on the platform.
+ - Search Movies: Easily search for specific movies using a search function.
+ - Trending Movies Algorithm: Displays trending movies based on a dynamic algorithm.
+ - Modern UI/UX: A sleek and user-friendly interface designed for a great experience.
+ - Responsiveness: Fully responsive design that works seamlessly across devices.
+ - Dark Mode: Seamlessly switch between light and dark themes for a comfortable and visually appealing user experience in any environment.
+ - Multi-Language Support: Enjoy a seamless experience with support for both English and Portuguese.
 
-1. Install dependencies
+## Home, Serach and Settings Screens in Dark Mode
+![Home, Serach and Settings Screens in Dark Mode](https://github.com/user-attachments/assets/b41efa09-affb-4b03-8b17-5a34fa68f8f9)
 
-   ```bash
-   npm install
-   ```
+## Home, Serach and Settings Screens in Light Mode
+![Home, Serach and Settings Screens in Light Mode](https://github.com/user-attachments/assets/58505f92-cfdf-4525-85fa-a0fb641a70e4)
 
-2. Start the app
+## Movie Details Screen in Dark and Light Mode
+![Movie Details Screen in Dark and Light Mode](https://github.com/user-attachments/assets/ccdf9fc2-2707-4051-9e04-eca3e70b0ce1)
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Experience React Native Movies by yourself
+ 1. Clone this repo
+ 2. Run `npm install` to install all the packages need to run this project
+ 3. Run `npx expo start` to start the server
+ 4. Install the **Expo Go** app on [iOS](https://apps.apple.com/us/app/expo-go/id982107779) or the **Expo** app on [Android](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&pli=1)
+ 5. Scan the **QR Code** with your phone camera to launch the app
