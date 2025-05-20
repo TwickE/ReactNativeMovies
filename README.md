@@ -7,6 +7,7 @@ ReactNativeMovies is an App built with React Native for the UI, Appwrite for the
 - Tailwindcss
 - TypeScript
 - Appwrite
+- Tanstack Query
 - i18next
 
 ## Faetures
