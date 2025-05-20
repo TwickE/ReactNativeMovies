@@ -2,6 +2,7 @@ import MovieCard from "@/components/MovieCard";
 import SearchBar from "@/components/SearchBar";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
+import { useLanguage } from "@/context/LanguageContext";
 import { updateSearchCount } from "@/services/appwrite";
 import { fetchMovies } from "@/services/tmdb";
 import useDebounce from "@/services/useDebounce";
@@ -13,8 +14,8 @@ import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
-
   const { t } = useTranslation("global");
+  const { currentLanguage } = useLanguage();
 
   const {
     data: movies,
@@ -24,8 +25,8 @@ const Search = () => {
     hasNextPage,
     isFetchingNextPage
   } = useInfiniteQuery({
-    queryKey: ['movies', debouncedSearchQuery],
-    queryFn: ({ pageParam }) => fetchMovies({ query: searchQuery, pageNumber: pageParam }),
+    queryKey: ['movies', currentLanguage, debouncedSearchQuery],
+    queryFn: ({ pageParam }) => fetchMovies({ query: searchQuery, language: currentLanguage, pageNumber: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total_pages) {

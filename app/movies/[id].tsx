@@ -1,4 +1,5 @@
 import { images } from '@/constants/images';
+import { useLanguage } from '@/context/LanguageContext';
 import { fetchMovieDetails } from '@/services/tmdb';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -25,14 +26,15 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => {
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
   const { t } = useTranslation("global");
+  const { currentLanguage } = useLanguage();
 
   const {
     data: movie,
     isLoading,
     isError
   } = useQuery({
-    queryKey: ['movie', id],
-    queryFn: () => fetchMovieDetails(id as string)
+    queryKey: ['movie', currentLanguage, id],
+    queryFn: () => fetchMovieDetails(id as string, currentLanguage)
   });
 
   return (

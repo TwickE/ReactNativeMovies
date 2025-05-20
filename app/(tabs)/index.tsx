@@ -2,6 +2,7 @@ import MovieCard from "@/components/MovieCard";
 import TrendingCard from "@/components/TrendingCard";
 import { icons } from "@/constants/icons";
 import { images } from "@/constants/images";
+import { useLanguage } from "@/context/LanguageContext";
 import { getTrendingMovies } from "@/services/appwrite";
 import { fetchMovies } from "@/services/tmdb";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -13,6 +14,7 @@ import { ActivityIndicator, FlatList, Image, Text, TouchableWithoutFeedback, Vie
 export default function Index() {
   const router = useRouter();
   const { t } = useTranslation("global");
+  const { currentLanguage } = useLanguage();
 
   const {
     data: trendingMovies,
@@ -31,8 +33,8 @@ export default function Index() {
     hasNextPage,
     isFetchingNextPage
   } = useInfiniteQuery({
-    queryKey: ['movies'],
-    queryFn: ({ pageParam }) => fetchMovies({ query: '', pageNumber: pageParam }),
+    queryKey: ['movies', currentLanguage],
+    queryFn: ({ pageParam }) => fetchMovies({ query: '', language: currentLanguage, pageNumber: pageParam }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total_pages) {

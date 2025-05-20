@@ -7,10 +7,10 @@ export const TMDB_CONFIG = {
   }
 }
 
-export const fetchMovies = async ({ query, pageNumber }: { query: string, pageNumber: number }) => {
+export const fetchMovies = async ({ query, pageNumber, language }: { query: string, pageNumber: number, language: string }) => {
   const endpoint = query
-    ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURI(query)}&include_adult=false&language=en-Us&page=${pageNumber}`
-    : `${TMDB_CONFIG.BASE_URL}/discover/movie?&include_adult=false&language=en-Us&page=${pageNumber}&sort_by=popularity.desc`;
+    ? `${TMDB_CONFIG.BASE_URL}/search/movie?query=${encodeURI(query)}&include_adult=false&language=${language === 'en' ? 'en-Us' : 'pt-PT'}&page=${pageNumber}`
+    : `${TMDB_CONFIG.BASE_URL}/discover/movie?&include_adult=false&language=${language === 'en' ? 'en-Us' : 'pt-PT'}&page=${pageNumber}&sort_by=popularity.desc`;
 
   const response = await fetch(endpoint, {
     method: 'GET',
@@ -27,9 +27,9 @@ export const fetchMovies = async ({ query, pageNumber }: { query: string, pageNu
   return data;
 }
 
-export const fetchMovieDetails = async (MovieId: string): Promise<MovieDetails> => {
+export const fetchMovieDetails = async (MovieId: string, language: string): Promise<MovieDetails> => {
   try {
-    const response = await fetch(`${TMDB_CONFIG.BASE_URL}/movie/${MovieId}?api_key=${TMDB_CONFIG.API_KEY}`, {
+    const response = await fetch(`${TMDB_CONFIG.BASE_URL}/movie/${MovieId}?language=${language === 'en' ? 'en-Us' : 'pt-PT'}&api_key=${TMDB_CONFIG.API_KEY}`, {
       method: 'GET',
       headers: TMDB_CONFIG.headers
     });
