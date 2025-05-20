@@ -7,11 +7,14 @@ import { fetchMovies } from "@/services/tmdb";
 import useDebounce from "@/services/useDebounce";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
+
+  const { t } = useTranslation("global");
 
   const {
     data: movies,
@@ -62,7 +65,7 @@ const Search = () => {
       <View className="px-5 pt-20">
         <Image source={icons.logo} className="size-12 mb-5 mx-auto" />
         <SearchBar
-          placeholder="Search for a movie"
+          placeholder={t("searchBar.placeholder")}
           value={searchQuery}
           onChangeText={handleSearch}
         />
@@ -70,11 +73,11 @@ const Search = () => {
       {isLoading ? (
         <ActivityIndicator size="large" color="#0000ff" className="py-5" />
       ) : isError ? (
-        <Text className="text-red-500 mx-auto my-3">Error fetching movies</Text>
+        <Text className="text-red-500 mx-auto my-3">{t("search.error")}</Text>
       ) : searchQuery.trim() && searchedMovies?.length! > 0 && (
         <>
           <Text className="text-xl text-black dark:text-white font-bold m-5">
-            Search Results for{" "}
+            {t("search.results")}
             <Text className="text-accent">{searchQuery}</Text>
           </Text>
           <FlatList

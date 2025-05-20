@@ -1,9 +1,26 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, View } from 'react-native';
 
 const TabIcon = ({ focused, icon, title }: any) => {
+  const { t } = useTranslation("global");
+
+  switch (title) {
+    case 'Home':
+      title = t("navbar.home");
+      break;
+    case 'Search':
+      title = t("navbar.search");
+      break;
+    case 'Settings':
+      title = t("navbar.settings");
+      break;
+    default:
+      break;
+  }
+
   if (focused) {
     return (
       <View className='flex flex-row flex-1 min-w-[140px] w-full min-h-16 mt-4 justify-center items-center rounded-full bg-light-100'>

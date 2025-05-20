@@ -1,0 +1,35 @@
+{
+  "settings": {
+    "languageTitle": "Language Settings",
+    "themeTitle": "Theme Settings",
+    "lightMode": "Light",
+    "darkMode": "Dark",
+    "systemMode": "System"
+  },
+  "navbar": {
+    "home": "Home",
+    "search": "Search",
+    "settings": "Settings"
+  },
+  "home": {
+    "trendingTitle": "Trending Movies",
+    "trendingError": "Error loading trending movies",
+    "latestTitle": "Latest Movies",
+    "latestError": "Error loading latest movies"
+  },
+  "searchBar": {
+    "placeholder": "Search for a movie"
+  },
+  "search": {
+    "error": "Error loading search results",
+    "results": "Search Results for "
+  },
+  "movieDetails": {
+    "error": "Error loading movie details",
+    "overview": "Overview",
+    "genres": "Genres",
+    "budget": "Budget",
+    "revenue": "Revenue",
+    "prodCompany's": "Production Companies"
+  }
+}

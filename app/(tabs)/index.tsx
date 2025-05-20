@@ -7,10 +7,12 @@ import { fetchMovies } from "@/services/tmdb";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, FlatList, Image, Text, TouchableWithoutFeedback, View } from "react-native";
 
 export default function Index() {
   const router = useRouter();
+  const { t } = useTranslation("global");
 
   const {
     data: trendingMovies,
@@ -48,15 +50,15 @@ export default function Index() {
         <TouchableWithoutFeedback onPress={() => router.push("/search")}>
           <View className="flex-row items-center bg-light-100 dark:bg-dark-200 rounded-full px-5 py-4">
             <FontAwesome name="search" size={20} color="#AB8BFF" />
-            <Text className="flex-1 ml-2 text-gray-500 dark:text-light-200">Search for a movie</Text>
+            <Text className="flex-1 ml-2 text-gray-500 dark:text-light-200">{t("searchBar.placeholder")}</Text>
           </View>
         </TouchableWithoutFeedback>
         <View className="mt-10">
-          <Text className="text-lg text-black dark:text-white font-bold mb-3">Trending Movies</Text>
+          <Text className="text-lg text-black dark:text-white font-bold mb-3">{t("home.trendingTitle")}</Text>
           {trendingLoading ? (
             <ActivityIndicator size="large" color="#0000ff" className="py-5" />
           ) : trendingError ? (
-            <Text className="text-red-500 mx-auto my-3">Error fetching trending movies</Text>
+            <Text className="text-red-500 mx-auto my-3">{t("home.trendingError")}</Text>
           ) : (
             <FlatList
               horizontal
@@ -71,7 +73,7 @@ export default function Index() {
             />
           )}
         </View>
-        <Text className="text-lg text-black dark:text-white font-bold mt-5 mb-3">Latest Movies</Text>
+        <Text className="text-lg text-black dark:text-white font-bold mt-5 mb-3">{t("home.latestTitle")}</Text>
       </View>
     </>
   );
@@ -85,7 +87,7 @@ export default function Index() {
     ) : moviesError ? (
       <View className="flex-1 bg-light-200 dark:bg-primary">
         {renderHeader()}
-        <Text className="text-red-500 mx-auto my-3">Error fetching movies</Text>
+        <Text className="text-red-500 mx-auto my-3">{t("home.latestError")}</Text>
       </View>
     ) : allMovies && allMovies.length > 0 ? (
       <FlatList

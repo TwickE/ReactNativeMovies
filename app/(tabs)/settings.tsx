@@ -1,6 +1,8 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useColorScheme } from "nativewind";
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -12,25 +14,51 @@ const Settings = () => {
     setSelectedTheme(colorScheme!);
   }, []);
 
+  const { t, i18n } = useTranslation("global");
+
+  useEffect(() => {
+    const loadSavedLanguage = async () => {
+      try {
+        const savedLanguage = await AsyncStorage.getItem('language');
+        if (savedLanguage) {
+          i18n.changeLanguage(savedLanguage);
+        }
+      } catch (error) {
+        console.error('Failed to load language preference:', error);
+      }
+    };
+
+    loadSavedLanguage();
+  }, [i18n]);
+
+  const handleChangeLanguage = async (lang: string) => {
+    try {
+      await AsyncStorage.setItem('language', lang);
+      i18n.changeLanguage(lang);
+    } catch (error) {
+      console.error('Failed to save language preference:', error);
+    }
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-light-200 dark:bg-primary">
       <View className='px-5 pt-10'>
-        <Text className='text-black dark:text-white text-lg font-bold'>Language Settings</Text>
+        <Text className='text-black dark:text-white text-lg font-bold'>{t("settings.languageTitle")}</Text>
         <SettingsButton
           title='Português'
-          onPress={() => { }}
-          isActive={false}
+          onPress={() => handleChangeLanguage("pt")}
+          isActive={i18n.language === "pt"}
           theme={colorScheme}
         />
         <SettingsButton
           title='English'
-          onPress={() => { }}
-          isActive={false}
+          onPress={() => handleChangeLanguage("en")}
+          isActive={i18n.language === "en"}
           theme={colorScheme}
         />
-        <Text className='text-black dark:text-white text-lg font-bold mt-8'>Theme Settings</Text>
+        <Text className='text-black dark:text-white text-lg font-bold mt-8'>{t("settings.themeTitle")}</Text>
         <SettingsButton
-          title='Light'
+          title={t("settings.lightMode")}
           icon="lightbulb-on"
           onPress={() => {
             setColorScheme("light");
@@ -40,7 +68,7 @@ const Settings = () => {
           theme={colorScheme}
         />
         <SettingsButton
-          title='Dark'
+          title={t("settings.darkMode")}
           icon="weather-night"
           onPress={() => {
             setColorScheme("dark");
@@ -50,7 +78,7 @@ const Settings = () => {
           theme={colorScheme}
         />
         <SettingsButton
-          title='System'
+          title={t("settings.systemMode")}
           icon="theme-light-dark"
           onPress={() => {
             setColorScheme("system");
@@ -87,9 +115,9 @@ const SettingsButton = ({ title, icon, onPress, isActive, theme }: SettingsButto
         name={isActive ? "check-circle" : "checkbox-blank-circle-outline"}
         size={20}
         color={
-          isActive ? ("#0000ff") 
-          : theme === 'dark' ? ("white") 
-          : "black"
+          isActive ? ("#0000ff")
+            : theme === 'dark' ? ("white")
+              : "black"
         }
       />
     </TouchableOpacity>

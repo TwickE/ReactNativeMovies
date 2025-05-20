@@ -1,0 +1,35 @@
+{
+  "settings": {
+    "languageTitle": "Definições de Idioma",
+    "themeTitle": "Definições de Tema",
+    "lightMode": "Claro",
+    "darkMode": "Escuro",
+    "systemMode": "Sistema"
+  },
+  "navbar": {
+    "home": "Início",
+    "search": "Procurar",
+    "settings": "Definições"
+  },
+  "home": {
+    "trendingTitle": "Filmes Populares",
+    "trendingError": "Erro ao carregar filmes populares",
+    "latestTitle": "Últimos Lançamentos",
+    "latestError": "Erro ao carregar últimos lançamentos"
+  },
+  "searchBar": {
+    "placeholder": "Procurar um filme"
+  },
+  "search": {
+    "error": "Erro ao carregar resultados da pesquisa",
+    "results": "Resultados para a pesquisa "
+  },
+  "movieDetails": {
+    "error": "Erro ao carregar detalhes do filme",
+    "overview": "Sinopse",
+    "genres": "Géneros",
+    "budget": "Orçamento",
+    "revenue": "Receita",
+    "prodCompany's": "Estúdios de Produção"
+  }
+}

@@ -5,6 +5,7 @@ import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { useQuery } from '@tanstack/react-query';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 interface MovieInfoProps {
@@ -23,6 +24,7 @@ const MovieInfo = ({ label, value }: MovieInfoProps) => {
 
 const MovieDetails = () => {
   const { id } = useLocalSearchParams();
+  const { t } = useTranslation("global");
 
   const {
     data: movie,
@@ -43,7 +45,7 @@ const MovieDetails = () => {
             className="mt-10 self-center"
           />
         ) : isError ? (
-          <Text className="text-red-500 mx-auto my-3">Error fetching movie details</Text>
+          <Text className="text-red-500 mx-auto my-3">{t("movieDetails.error")}</Text>
         ) : (
           <>
             <View className='flex-1 items-center justify-center'>
@@ -67,13 +69,13 @@ const MovieDetails = () => {
                 <Text className='text-black dark:text-white font-bold text-sm'>{movie?.vote_average?.toFixed(1)}/10</Text>
                 <Text className='text-dark-200 dark:text-light-200 text-sm'>({movie?.vote_count} votes)</Text>
               </View>
-              <MovieInfo label='Overview' value={movie?.overview} />
-              <MovieInfo label='Genres' value={movie?.genres?.map((genre: { name: string }) => genre.name).join(' · ') || 'N/A'} />
+              <MovieInfo label={t("movieDetails.overview")} value={movie?.overview} />
+              <MovieInfo label={t("movieDetails.genres")} value={movie?.genres?.map((genre: { name: string }) => genre.name).join(' · ') || 'N/A'} />
               <View className='flex flex-row justify-between w-1/2'>
-                <MovieInfo label='Budget' value={`$${(movie?.budget ?? 0) / 1_000_000} million` || 'N/A'} />
-                <MovieInfo label='Revenue' value={`$${Math.round((movie?.revenue ?? 0) / 1_000_000)} million` || 'N/A'} />
+                <MovieInfo label={t("movieDetails.budget")} value={`$${(movie?.budget ?? 0) / 1_000_000} million` || 'N/A'} />
+                <MovieInfo label={t("movieDetails.revenue")} value={`$${Math.round((movie?.revenue ?? 0) / 1_000_000)} million` || 'N/A'} />
               </View>
-              <MovieInfo label='Production Companies' value={movie?.production_companies?.map((company: { name: string }) => company.name).join(' · ') || 'N/A'} />
+              <MovieInfo label={t("movieDetails.prodCompany's")} value={movie?.production_companies?.map((company: { name: string }) => company.name).join(' · ') || 'N/A'} />
             </View>
           </>
         )}
